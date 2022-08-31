@@ -1,33 +1,35 @@
 package jm.task.core.jdbc;
 
-import jm.task.core.jdbc.util.Util;
-import org.hibernate.Session;
+import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.service.UserServiceImpl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Connection conn = Util.getConnection();
+        User userIvan = new User("Иван", "Иванов", (byte) 12);
+        User userPetr = new User("Петр", "Петров", (byte) 25);
+        User userBoris = new User("Борис", "Кузьмин", (byte) 45);
+        User userJhon = new User("Джон", "Смит", (byte) 55);
 
-        try {
-            Statement sat = conn.createStatement();
-           // sat.executeUpdate("CREATE TABLE user_data (Id BIGINT PRIMARY KEY AUTO_INCREMENT, " +
-            //        "name VARCHAR(20), lastName VARCHAR(20), age TINYINT)");
+        UserServiceImpl userService = new UserServiceImpl();
 
+        userService.createUsersTable();
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        userService.saveUser(userIvan.getName(), userIvan.getLastName(), userIvan.getAge());
+        userService.saveUser(userPetr.getName(), userPetr.getLastName(), userPetr.getAge());
+        userService.saveUser(userBoris.getName(), userBoris.getLastName(), userBoris.getAge());
+        userService.saveUser(userJhon.getName(), userJhon.getLastName(), userJhon.getAge());
+
+        List<User> userList = userService.getAllUsers();
+
+        for (User us : userList) {
+            System.out.println(us.toString());
         }
 
+        userService.cleanUsersTable();
 
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        userService.dropUsersTable();
 
 //        Session session = Util.getSessionFactory().openSession();
 //
