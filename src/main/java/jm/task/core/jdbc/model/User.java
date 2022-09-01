@@ -1,6 +1,5 @@
 package jm.task.core.jdbc.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,16 +8,12 @@ import javax.persistence.Table;
 @Table(schema = "pp_1_1_3_jdbc_hibernate")
 public class User {
     @Id
-    @Column
     private Long id;
 
-    @Column
     private String name;
 
-    @Column
     private String lastName;
 
-    @Column
     private Byte age;
 
     public User() {

@@ -30,10 +30,5 @@ public class Main {
         userService.cleanUsersTable();
 
         userService.dropUsersTable();
-
-//        Session session = Util.getSessionFactory().openSession();
-//
-//        session.close();
-//        Util.shutdown();
     }
 }
