@@ -14,7 +14,7 @@ public class Util {
 
     public static Connection buildConnection() {
         try {
-            Class.forName("com.mysql.jdbc.Driver").getDeclaredConstructor().newInstance();
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException | ClassNotFoundException | InvocationTargetException | InstantiationException |
