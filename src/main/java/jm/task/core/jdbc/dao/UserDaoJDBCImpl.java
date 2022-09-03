@@ -13,7 +13,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() {
-        try (Statement stat = Util.buildConnection().createStatement())  {
+        try (Connection conn = Util.buildConnection(); Statement stat = conn.createStatement()) {
             stat.executeUpdate("CREATE TABLE IF NOT EXISTS user_data (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(20), lastName VARCHAR(20), age TINYINT)");
         } catch (SQLException e) {
             System.out.printf("%s - ошибка создания таблицы user_data", e.getErrorCode());
@@ -21,7 +21,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        try (Statement stat = Util.buildConnection().createStatement()) {
+        try (Connection conn = Util.buildConnection(); Statement stat = conn.createStatement()) {
             stat.executeUpdate("CREATE TABLE IF NOT EXISTS user_data (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(20), lastName VARCHAR(20), age TINYINT)");
             stat.executeUpdate("DROP TABLE user_data");
         } catch (SQLException e) {
@@ -32,7 +32,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         String query = "INSERT INTO user_data (name, lastName, age) VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = Util.getConnection().prepareStatement(query)) {
+        try (Connection conn = Util.buildConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, name);
             ps.setString(2, lastName);
             ps.setByte(3, age);
@@ -48,7 +48,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void removeUserById(long id) {
         String query = "DELETE from user_data WHERE Id = ?";
 
-        try (PreparedStatement ps = Util.getConnection().prepareStatement(query)) {
+        try (Connection conn = Util.buildConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setLong(1, id);
             ps.execute();
         } catch (SQLException e) {
@@ -59,7 +59,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
 
-        try (Statement stat = Util.buildConnection().createStatement()) {
+        try (Connection conn = Util.buildConnection(); Statement stat = conn.createStatement()) {
             ResultSet rs = stat.executeQuery("SELECT * FROM user_data");
 
             while (rs.next()) {
@@ -79,7 +79,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        try (Statement stat = Util.buildConnection().createStatement()) {
+        try (Connection conn = Util.buildConnection(); Statement stat = conn.createStatement()) {
             stat.executeUpdate("TRUNCATE TABLE user_data");
         } catch (SQLException e) {
             System.out.printf("%s - ошибка удаления данных из таблицы user_data", e.getErrorCode());
